@@ -1,0 +1,22 @@
+name: Deploy Website
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Upload to S3 (if using AWS S3)
+        run: |
+          aws s3 sync . s3://websiteofhtml --delete
+
+      - name: Deploy to Server (if using EC2)
+        run: |
+          scp -r * ubuntu@3.110.154.194:/var/www/html/
